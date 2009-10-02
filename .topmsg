@@ -1,0 +1,6 @@
+From: John Whitley <whitley@bangpath.org>
+Subject: [PATCH] t/bsdsed
+
+Make topgit handle BSD vs. GNU sed.
+
+Signed-off-by: John Whitley <whitley@bangpath.org>
