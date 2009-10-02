@@ -6,7 +6,6 @@
 terse=
 graphviz=
 
-
 ## Parse options
 
 while [ -n "$1" ]; do
@@ -22,7 +21,7 @@ while [ -n "$1" ]; do
 	esac
 done
 
-curname="$(git symbolic-ref HEAD | sed 's#^refs/\(heads\|top-bases\)/##')"
+curname="$(git symbolic-ref HEAD | $extsed 's#^refs/(heads|top-bases)/##')"
 
 ! [ -n "$terse" -a -n "$graphviz" ] ||
 	die "-t and --graphviz options are mutual exclusive"

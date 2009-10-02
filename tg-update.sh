@@ -14,7 +14,7 @@ if [ -n "$1" ]; then
 fi
 
 
-name="$(git symbolic-ref HEAD | sed 's#^refs/\(heads\|top-bases\)/##')"
+name="$(git symbolic-ref HEAD | $extsed 's#^refs/(heads|top-bases)/##')"
 base_rev="$(git rev-parse --short --verify "refs/top-bases/$name" 2>/dev/null)" ||
 	die "not a TopGit-controlled branch"
 

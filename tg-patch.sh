@@ -9,7 +9,6 @@ topic=
 diff_opts=
 diff_committed_only=yes	# will be unset for index/worktree
 
-
 ## Parse options
 
 while [ -n "$1" ]; do
@@ -35,7 +34,7 @@ done
 [ -n "$name"  -a  -z "$diff_committed_only" ]  &&
 	die "-i/-w are mutually exclusive with NAME"
 
-[ -n "$name" ] || name="$(git symbolic-ref HEAD | sed 's#^refs/\(heads\|top-bases\)/##')"
+[ -n "$name" ] || name="$(git symbolic-ref HEAD | $extsed 's#^refs/(heads|top-bases)/##')"
 base_rev="$(git rev-parse --short --verify "refs/top-bases/$name" 2>/dev/null)" ||
 	die "not a TopGit-controlled branch"
 

@@ -321,6 +321,24 @@ setup_pager()
 	trap "exec >&-; rm \"$_pager_fifo\"; rmdir \"$_pager_fifo_dir\"; wait" EXIT
 }
 
+# Setup extended sed ("extsed") for this system
+setup_extsed() {
+    unset extsed
+    _gnu_sed_flag=`echo foo | sed -r -e s/foo+/OK/ 2>&1 | grep OK`
+    if [ "x$_gnu_sed_flag" = "xOK" ] ; then
+        extsed="sed -r"
+    else
+        _bsd_sed_flag=`echo foo | sed -E -e s/foo+/OK/ 2>&1 | grep OK`
+        if [ "x$_bsd_sed_flag" = "xOK" ] ; then
+            extsed="sed -E"
+        fi
+    fi
+    if [ -z "$extsed" ] ; then
+        echo "Error, topgit couldn't find sed with extended regexp support."
+        exit 1
+    fi
+}
+
 ## Startup
 
 [ -d "@cmddir@" ] ||
@@ -338,6 +356,7 @@ tg="tg"
 # make sure merging the .top* files will always behave sanely
 setup_ours
 setup_hook "pre-commit"
+setup_extsed
 
 ## Dispatch
 
