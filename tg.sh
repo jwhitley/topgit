@@ -306,7 +306,14 @@ setup_pager()
 	# now spawn pager
 	export LESS=${LESS:-FRSX}	# as in pager.c:pager_preexec()
 
-	_pager_fifo_dir="$(mktemp -t -d tg-pager-fifo.XXXXXX)"
+    ( mktemp -V &> /dev/null )
+    if [ $? -eq 0 ] ; then
+        # GNU mktemp
+	    _pager_fifo_dir="$(mktemp -t -d tg-pager-fifo.XXXXXX)"
+	else
+	    # BSD mktemp
+	    _pager_fifo_dir="$(mktemp -d -t tg-pager-fifo)"
+    fi
 	_pager_fifo="$_pager_fifo_dir/0"
 	mkfifo -m 600 "$_pager_fifo"
 
